@@ -4,17 +4,36 @@ var router = express.Router();
 
 var fullf=require('dialogflow-fulfillment');
 
+
+
+
 router.post('/', express.json(), (req,res,next)=>{
+
     const agent = new fullf.WebhookClient({ request:req, response:res});
     console.log('Webhook Server called');
 
     function firstIntent(agent){
-        agent.add('response from Webhook server');
+        try{
+            agent.add('response from Webhook  for first Intent');
+        }catch(err){
+            console.log(err);
+        }
+       
+    }
+
+    function secondIntent(agent){
+        try{
+            agent.add('response from Webhook server for second Intent');
+        }catch(err){
+            console.log(err);
+        }
     }
 
     var intentMap= new Map();
 
-    intentMap.add('firstIntent',firstIntent);
+    intentMap.set('firstIntent',firstIntent);
+    intentMap.set('secondIntent',secondIntent);
+    
 
     agent.handleRequest(intentMap);
 })
