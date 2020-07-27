@@ -11,16 +11,16 @@ const dialogflow = require('@google-cloud/dialogflow');
       /* GET home page. */
     router.get('/', function(req, res, next) {
 
-      runSample('test1-gvnrcx').then(response=>{
+      runSample().then(response=>{
         res.send({"data": response})
       });
       
     });
 
-    async function runSample(projectId) {
+    async function runSample() {
       // A unique identifier for the given session
       const sessionId =uuidv4();
-    
+      const projectId=keysFile.project_id;
       // Create a new session
      // const keys= JSON.parse(fs.readFileSync('G:/KinProject/nodeProjects/keys.json','utf8'));
       //console.log(keys.type);
@@ -35,8 +35,6 @@ const dialogflow = require('@google-cloud/dialogflow');
           private_key: privateKey
         }
       }
-
-      console.log(config);
      
 
       const sessionClient = new dialogflow.SessionsClient(config);
