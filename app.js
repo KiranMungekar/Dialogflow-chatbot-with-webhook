@@ -7,7 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var webHookFullfulment= require('./routes/webHookResponse');
-
+require('dotenv').config();
 var app = express();
 
 // view engine setup

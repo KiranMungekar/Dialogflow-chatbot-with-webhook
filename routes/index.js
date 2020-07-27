@@ -1,24 +1,12 @@
 var express = require('express');
 var router = express.Router();
+const { v4: uuidv4 } = require('uuid');
+
+const keysFile=require('../keys.json');
+
 const dialogflow = require('@google-cloud/dialogflow');
 
-// Instantiates a session client
-//const config= require('../keys.json');
-// const sessionClient = new dialogflow.SessionsClient({
-//   keyFilename:'G:/KinProject/nodeProjects/keys.json'
-// });
 
-
-
-// const projectId = 'test1-gvnrcx';
-// //console.log(config.project_id);
-// const sessionId = '123456';
-// const languageCode = 'en';
-// const queries = [
-//    'demo',
-//   // 'Next monday at 3pm for 1 hour, please', // Tell the bot when the meeting is taking place
-//   // 'B'  // Rooms are defined on the Dialogflow agent, default options are A, B, or C
-// ];
 
       /* GET home page. */
     router.get('/', function(req, res, next) {
@@ -31,10 +19,27 @@ const dialogflow = require('@google-cloud/dialogflow');
 
     async function runSample(projectId) {
       // A unique identifier for the given session
-      const sessionId = '12345';
+      const sessionId =uuidv4();
     
       // Create a new session
-      const sessionClient = new dialogflow.SessionsClient({keyFilename:'G:/KinProject/nodeProjects/keys.json'});
+     // const keys= JSON.parse(fs.readFileSync('G:/KinProject/nodeProjects/keys.json','utf8'));
+      //console.log(keys.type);
+      //keys.
+    //  console.log(process.env.DIALOGFLOW_CLIENT_EMAIL);
+      const privateKey = keysFile.private_key;
+      const clientEmail =  keysFile.client_email;
+     
+      const config = {        
+        credentials:{
+          client_email: clientEmail,
+          private_key: privateKey
+        }
+      }
+
+      console.log(config);
+     
+
+      const sessionClient = new dialogflow.SessionsClient(config);
       const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
     
       // The text query request.
